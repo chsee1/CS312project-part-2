@@ -3,6 +3,16 @@ provider "aws" {
   region = var.aws_region
 }
 
+data "aws_ami" "amazon_linux_2" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
 resource "aws_security_group" "minecraft_sg" {
   name        = "minecraft-server-sg"
   description = "Allow Minecraft and SSH traffic"
@@ -30,7 +40,7 @@ resource "aws_security_group" "minecraft_sg" {
 }
 
 resource "aws_instance" "minecraft_server" {
-  ami           = "ami-0c55b159cbfafe1f0" # Amazon Linux 2 (Verify for your region)
+  ami           = data.aws_ami.amazon_linux_2.id
   instance_type = "t3.medium"
   key_name      = var.key_name
   vpc_security_group_ids = [aws_security_group.minecraft_sg.id]
@@ -39,3 +49,4 @@ resource "aws_instance" "minecraft_server" {
     Name = "Acme-Minecraft-Server"
   }
 }
+

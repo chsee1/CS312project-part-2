@@ -1,14 +1,18 @@
 # Terraform
 .terraform/
+.terraform.lock.hcl
 *.tfstate
 *.tfstate.backup
 *.tfvars
 *.tfvars.json
+*.tfplan
 override.tf
 override.tf.json
+crash.log
 
 # Ansible
 *.retry
+ansible/keys/
 
 # OS specific
 .DS_Store

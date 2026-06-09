@@ -1,34 +1,51 @@
 # ansible/playbook.yml
 - name: Configure Minecraft Server
-  hosts: minecraft
+  hosts: all
   become: yes
   tasks:
-    - name: Install Java 17
-      amazon.linux.extras:
-        name: java-openjdk15
-        state: present
+    - name: Install Java 21 (Amazon Corretto) via amazon-linux-extras
+      shell: amazon-linux-extras install java-openjdk21 -y
+      args:
+        creates: /usr/bin/java   # makes it idempotent — skips if java already exists
 
     - name: Create Minecraft user
       user:
         name: minecraft
         shell: /bin/bash
+        create_home: yes
+
+    - name: Create Minecraft directory
+      file:
+        path: /home/minecraft
+        state: directory
+        owner: minecraft
+        group: minecraft
+        mode: '0755'
 
     - name: Download Minecraft Server
       get_url:
-        url: https://piston-data.mojang.com/v1/objects/84194a2f286ef1cae457eeedbc9d2b98f5e9916a/server.jar
+        url: https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar
         dest: /home/minecraft/server.jar
         owner: minecraft
+        group: minecraft
+        mode: '0644'
+      notify: Restart Minecraft
 
     - name: Accept EULA
       copy:
-        content: "eula=true"
+        content: "eula=true\n"
         dest: /home/minecraft/eula.txt
         owner: minecraft
+        group: minecraft
+        mode: '0644'
 
     - name: Setup Systemd Service
       template:
         src: templates/minecraft.service.j2
         dest: /etc/systemd/system/minecraft.service
+        owner: root
+        group: root
+        mode: '0644'
       notify: Restart Minecraft
 
   handlers:
