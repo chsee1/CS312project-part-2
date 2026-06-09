@@ -49,4 +49,3 @@ resource "aws_instance" "minecraft_server" {
     Name = "Acme-Minecraft-Server"
   }
 }
-
