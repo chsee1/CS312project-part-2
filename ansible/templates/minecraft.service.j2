@@ -1,0 +1,21 @@
+# ansible/templates/minecraft.service.j2
+[Unit]
+Description=Minecraft Server
+After=network.target
+
+[Service]
+WorkingDirectory=/home/minecraft
+User=minecraft
+Group=minecraft
+
+# Use 'Screen' to allow sending commands to the stdin
+ExecStart=/usr/bin/java -Xmx1024M -Xms1024M -jar server.jar nogui
+
+# Graceful shutdown: Send "stop" to the process
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,40 @@
+# ansible/playbook.yml
+- name: Configure Minecraft Server
+  hosts: minecraft
+  become: yes
+  tasks:
+    - name: Install Java 17
+      amazon.linux.extras:
+        name: java-openjdk15
+        state: present
+
+    - name: Create Minecraft user
+      user:
+        name: minecraft
+        shell: /bin/bash
+
+    - name: Download Minecraft Server
+      get_url:
+        url: https://piston-data.mojang.com/v1/objects/84194a2f286ef1cae457eeedbc9d2b98f5e9916a/server.jar
+        dest: /home/minecraft/server.jar
+        owner: minecraft
+
+    - name: Accept EULA
+      copy:
+        content: "eula=true"
+        dest: /home/minecraft/eula.txt
+        owner: minecraft
+
+    - name: Setup Systemd Service
+      template:
+        src: templates/minecraft.service.j2
+        dest: /etc/systemd/system/minecraft.service
+      notify: Restart Minecraft
+
+  handlers:
+    - name: Restart Minecraft
+      systemd:
+        name: minecraft
+        state: restarted
+        enabled: yes
+        daemon_reload: yes
