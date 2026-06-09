@@ -19,4 +19,4 @@ ansible/keys/
 thumbs.db
 
 # Sensitive data
-*.pem
+*.pemawscliv2.zip
