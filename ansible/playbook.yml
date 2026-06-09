@@ -3,10 +3,24 @@
   hosts: all
   become: yes
   tasks:
-    - name: Install Java 21 (Amazon Corretto) via amazon-linux-extras
-      shell: amazon-linux-extras install java-openjdk21 -y
-      args:
-        creates: /usr/bin/java   # makes it idempotent — skips if java already exists
+    - name: Import Amazon Corretto GPG key
+      rpm_key:
+        key: https://yum.corretto.aws/corretto.key
+        state: present
+
+    - name: Add Amazon Corretto yum repository
+      yum_repository:
+        name: corretto
+        description: Amazon Corretto
+        baseurl: https://yum.corretto.aws/corretto.repo
+        gpgcheck: yes
+        gpgkey: https://yum.corretto.aws/corretto.key
+        enabled: yes
+
+    - name: Install Java 21 (Amazon Corretto)
+      yum:
+        name: java-21-amazon-corretto-devel
+        state: present
 
     - name: Create Minecraft user
       user:
