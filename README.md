@@ -207,3 +207,15 @@ The relevant service configuration is in [`ansible/templates/minecraft.service.j
 - The EC2 instance runs **Amazon Linux 2**, which reaches end-of-life on June 30, 2026. Consider migrating to Amazon Linux 2023 for longer-term deployments.
 - The `vockey.pem` private key is excluded from version control via `.gitignore`. Never commit private keys to Git.
 - Learner Lab session tokens expire periodically. If Terraform or Ansible fails with an auth error, refresh your credentials from the Learner Lab and re-export them.
+
+
+## Resources & Sources
+
+- [Terraform AWS Provider Documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- [Ansible Documentation](https://docs.ansible.com/)
+- [Amazon Corretto 21 — amazon-linux-extras](https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/amazon-linux-install.html)
+- [Minecraft Server Download](https://www.minecraft.net/en-us/download/server)
+- [systemd Service Unit Documentation](https://www.freedesktop.org/software/systemd/man/systemd.service.html)
+- [GitHub Basic Markdown Syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+- [Terraform EC2 Instance Resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance)
+- [nmap Documentation](https://nmap.org/docs.html)
