@@ -12,7 +12,7 @@
       yum_repository:
         name: corretto
         description: Amazon Corretto
-        baseurl: https://yum.corretto.aws/
+        baseurl: https://yum.corretto.aws/corretto/al2/x86_64/
         gpgcheck: yes
         gpgkey: https://yum.corretto.aws/corretto.key
         enabled: yes
